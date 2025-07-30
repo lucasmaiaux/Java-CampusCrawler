@@ -1,9 +1,12 @@
 package fr.campus.dungeoncrawler;
 //import java.util.concurrent.TimeUnit;
 
+import fr.campus.dungeoncrawler.characters.Character;
+import fr.campus.dungeoncrawler.exceptions.OutOfBoardException;
+
 public class Game {
     private int nb_players;
-    private Character character;
+    private fr.campus.dungeoncrawler.characters.Character character;
     private int position;
     private Dice dice;
 
@@ -12,6 +15,7 @@ public class Game {
         this.character = character;
         this.position = position;
         this.dice = new Dice();
+
     }
 
     // Pour simuler un délai de $delay ms (1000 => 1s)
@@ -40,10 +44,25 @@ public class Game {
         int diceRoll = dice.newRoll();
         System.out.println("Lancer dé : " + diceRoll);
 
-        System.out.print("Case " + position + " -> ");
-        position = Math.min(position + diceRoll, 64);
-        System.out.println(position);
-        customDelay(1000);
+
+
+        try
+        {
+            //position = Math.min(position + diceRoll, 64);
+            if (position + diceRoll > 64)
+            {
+                throw new OutOfBoardException();
+            }
+            else {
+                System.out.print("Case " + position + " -> ");
+                position = position + diceRoll;
+                System.out.println(position);
+            }
+        } catch (OutOfBoardException e) {
+            System.out.println("Ligne d'arrivée dépassée, on relance");
+        }
+
+        customDelay(800);
 
     }
 

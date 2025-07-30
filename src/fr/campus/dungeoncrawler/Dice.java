@@ -22,6 +22,10 @@ public class Dice {
                 '}';
     }
 
+    /**
+     * Throw a dice and return its result
+     * @return Dice value (between 1 and 6)
+     */
     public int newRoll() {
         return (int)(Math.random() * 6) + 1;
     }

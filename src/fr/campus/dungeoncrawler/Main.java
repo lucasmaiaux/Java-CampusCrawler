@@ -13,6 +13,6 @@ public class Main {
                 "                                        Le donjon est ouvert                                                      \n" +
                 "                                    ~ Entrez si vous l'osez... ~                                                   ");
 
-        Menu.startMenu();
+        Menu.startGame();
     }
 }

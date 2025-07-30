@@ -1,12 +1,23 @@
 package fr.campus.dungeoncrawler;
 
+import fr.campus.dungeoncrawler.characters.Character;
+import fr.campus.dungeoncrawler.characters.Warrior;
+import fr.campus.dungeoncrawler.characters.Wizard;
+
 import java.util.Scanner;
 
+/**
+ * <p>The Menu class contains methods interacting with the user.</p>
+ * <p>Using the Scanner class to intercept user inputs</p>
+ */
 public class Menu {
     static Scanner clavier = new Scanner(System.in);
-    static private Character character = null;
+    static private fr.campus.dungeoncrawler.characters.Character character = null;
 
-    public static void startMenu() {
+    /**
+     * Start Menu
+     */
+    public static void startGame() {
         int userChoice = 0;
 
         do {
@@ -22,17 +33,22 @@ public class Menu {
 
             switch (userChoice) {
                 case 1:
-                    newCharacterMenu();
+                    createCharacter();
                     break;
                 case 2:
-                    editCharacterMenu();
+                    if (character == null) {
+                        System.out.println("Il faut d'abord créer un personnage !");
+                    }
+                    else {
+                        editCharacter();
+                    }
                     break;
                 case 3:
                     if (character == null) {
                         System.out.println("Il faut d'abord créer un personnage !");
                     }
                     else {
-                        newGame();
+                        createGame();
                     }
                     break;
                 case 4:
@@ -45,7 +61,7 @@ public class Menu {
         } while (userChoice != 4);
     }
 
-    public static void newCharacterMenu() {
+    public static void createCharacter() {
         System.out.println("-------- Creation de personnage --------");
         String newClass;
         String newName;
@@ -62,14 +78,22 @@ public class Menu {
         newName = clavier.nextLine();
 
         System.out.println("Personnage créé !");
-        character = new Character(newName, newClass);
+
+        switch (newClass) {
+            case "Guerrier":
+                character = new Warrior(newName, newClass);
+                break;
+            case "Magicien":
+                character = new Wizard(newName, newClass);
+                break;
+        }
     }
 
-    public static void editCharacterMenu() {
+    public static void editCharacter() {
         int userChoice = 0;
         do {
             System.out.println("------ Modification de personnage ------");
-            System.out.println("Personnage actuel : " + character.getName() + " (" + character.getType() + ")");
+            System.out.println(character.toString());
             System.out.println("1 - Modifier le nom");
             System.out.println("2 - Modifier la classe");
             System.out.println("3 - Menu principal");
@@ -80,10 +104,10 @@ public class Menu {
 
             switch (userChoice) {
                 case 1:
-                    editCharacterNameMenu();
+                    editCharacterName();
                     break;
                 case 2:
-                    editCharacterTypeMenu();
+                    editCharacterType();
                     break;
                 case 3:
                     // On quitte
@@ -94,7 +118,7 @@ public class Menu {
         } while (userChoice != 3);
     }
 
-    public static void editCharacterNameMenu() {
+    public static void editCharacterName() {
         System.out.println("Nom actuel : " + character.getName());
         System.out.print("Nouveau nom : ");
 
@@ -103,7 +127,7 @@ public class Menu {
         System.out.println("Le nom a été correctement modifié");
     }
 
-    public static void editCharacterTypeMenu() {
+    public static void editCharacterType() {
         System.out.println("Classe actuelle : " + character.getType());
         System.out.print("Nouvelle classe : ");
 
@@ -112,7 +136,7 @@ public class Menu {
         System.out.println("La classe a été correctement modifiée");
     }
 
-    public static void newGame() {
+    public static void createGame() {
         Game game = new Game(1, character, 1 );
         game.runGame();
     }

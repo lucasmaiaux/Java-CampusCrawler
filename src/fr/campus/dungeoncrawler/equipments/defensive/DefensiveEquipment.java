@@ -1,11 +1,11 @@
-package fr.campus.dungeoncrawler;
+package fr.campus.dungeoncrawler.equipments.defensive;
 
 public class DefensiveEquipment {
-    private String name;
-    private String type;
-    private int defense;
+    protected String name;
+    protected String type;
+    protected int defense;
 
-    public DefensiveEquipment(String name,String type, int defense) {
+    public DefensiveEquipment(String name, String type, int defense) {
         this.name = name;
         this.type = type;
         this.defense = defense;
@@ -33,13 +33,5 @@ public class DefensiveEquipment {
 
     public void setDefense(int defense) {
         this.defense = defense;
-    }
-
-    public String toString() {
-        return "fr.campus.dungeoncrawler.DefensiveEquipment{" +
-                "name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ", defense=" + defense +
-                '}';
     }
 }
