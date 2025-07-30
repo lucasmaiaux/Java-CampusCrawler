@@ -12,6 +12,7 @@ public class Character {
         this.type = type;
 
         switch (type) {
+
             case "Guerrier":
                 this.health = 10;
                 this.attack = 10;
