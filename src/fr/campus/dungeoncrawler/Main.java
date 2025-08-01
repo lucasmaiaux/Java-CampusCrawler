@@ -14,5 +14,6 @@ public class Main {
                 "                                    ~ Entrez si vous l'osez... ~                                                   ");
 
         Menu.startGame();
+        System.out.println("Merci d'avoir joué !");
     }
 }
