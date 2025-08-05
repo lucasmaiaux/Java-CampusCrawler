@@ -1,9 +1,7 @@
 package fr.campus.dungeoncrawler.board.cells.empty;
 
 import fr.campus.dungeoncrawler.board.cells.Cell;
-import fr.campus.dungeoncrawler.characters.Character;
 import fr.campus.dungeoncrawler.characters.players.Player;
-import fr.campus.dungeoncrawler.equipments.defensive.Potion;
 
 public class CellEmpty extends Cell {
 

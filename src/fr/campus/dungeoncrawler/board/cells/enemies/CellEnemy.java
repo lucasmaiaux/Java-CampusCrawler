@@ -41,8 +41,11 @@ public class CellEnemy extends Cell {
         int playerAttack = player.getAttack() + player.getOffensiveEquipment().getAttack();
         int enemyHealth = enemy.getHealth();
         int enemyAttack = enemy.getAttack();
+        int playerDefense = player.getDefensiveEquipment() != null ? player.getDefensiveEquipment().getDefense() : 0;
 
         System.out.println("⚔️ Combat entre " + AnsiColors.GREEN_BRIGHT + player.getName() + AnsiColors.RESET + " et " + AnsiColors.RED_BRIGHT + enemy.getName() + AnsiColors.RESET);
+        System.out.println(AnsiColors.CYAN_BRIGHT + "Vos stats: " + playerHealth + " HP, " + playerAttack + " ATK, " + playerDefense + " DEF" + AnsiColors.RESET);
+        System.out.println(AnsiColors.RED_BRIGHT + "Ennemi: " + enemyHealth + " HP, " + enemyAttack + " ATK" + AnsiColors.RESET);
 
         do {
             int playerAttackFinal = playerAttack;
@@ -57,13 +60,23 @@ public class CellEnemy extends Cell {
 
                     if (diceRoll == 20) {
                         // Réussite critique
-                        System.out.println("Réussite critique ! (+2 Force)");
-                        playerAttackFinal = playerAttackFinal + 2;
+                        System.out.println(AnsiColors.YELLOW_BRIGHT + "🎯 Réussite critique ! (+3 Force)" + AnsiColors.RESET);
+                        playerAttackFinal = playerAttackFinal + 3;
                     }
-                    else if (diceRoll == 0) {
-                        // Echec critique
-                        System.out.println("Echec critique ! (Raté)");
+                    else if (diceRoll >= 15) {
+                        // Réussite normale
+                        System.out.println(AnsiColors.GREEN_BRIGHT + "✅ Bon coup ! (+1 Force)" + AnsiColors.RESET);
+                        playerAttackFinal = playerAttackFinal + 1;
+                    }
+                    else if (diceRoll <= 3) {
+                        // Échec critique
+                        System.out.println(AnsiColors.RED_BRIGHT + "💥 Échec critique ! (Raté)" + AnsiColors.RESET);
                         playerAttackFinal = 0;
+                    }
+                    else if (diceRoll <= 8) {
+                        // Échec partiel
+                        System.out.println(AnsiColors.YELLOW_BRIGHT + "⚠️ Coup faible (-2 Force)" + AnsiColors.RESET);
+                        playerAttackFinal = Math.max(0, playerAttackFinal - 2);
                     }
 
                     enemyHealth = enemyHealth - playerAttackFinal;
@@ -72,26 +85,68 @@ public class CellEnemy extends Cell {
                     if (enemyHealth <= 0) {
                         enemy.setHealth(0);
                         System.out.println("\uD83D\uDC80 " + AnsiColors.RED_BRIGHT + enemy.getName() + AnsiColors.RESET + " meurt");
+                        
+                        // Attribution d'expérience basée sur le type d'ennemi
+                        int expGained = 0;
+                        switch (enemy.getPlayerClass()) {
+                            case "Goblin":
+                                expGained = 20;
+                                break;
+                            case "Orc":
+                                expGained = 35;
+                                break;
+                            case "Sorcière":
+                                expGained = 50;
+                                break;
+                            case "Dragon":
+                                expGained = 100;
+                                break;
+                            default:
+                                expGained = 25;
+                        }
+                        
+                        player.gainExperience(expGained);
+                        System.out.println(AnsiColors.GREEN_BRIGHT + "🎉 Victoire ! Vous gagnez " + expGained + " expérience !" + AnsiColors.RESET);
+                        System.out.println(AnsiColors.CYAN_BRIGHT + "📊 Niveau " + player.getLevel() + " | Exp: " + player.getExperience() + "/" + player.getExperienceToNextLevel() + AnsiColors.RESET);
                     }
                     else {
                         enemy.setHealth(enemyHealth);
 
-                        playerHealth = playerHealth - enemyAttack;
-                        System.out.println("⚔️ " + AnsiColors.RED_BRIGHT  + enemy.getName() + AnsiColors.RESET + " tape et inflige " + AnsiColors.YELLOW_BRIGHT + enemy.getAttack() + " DMG" + AnsiColors.RESET);
+                        // Attaque de l'ennemi avec système d'esquive
+                        int enemyDiceRoll = dice20.rollDice();
+                        int enemyDamage = enemyAttack;
+                        
+                        if (enemyDiceRoll <= 5) {
+                            System.out.println(AnsiColors.GREEN_BRIGHT + "🛡️ Vous esquivez l'attaque !" + AnsiColors.RESET);
+                            enemyDamage = 0;
+                        } else if (enemyDiceRoll >= 18) {
+                            System.out.println(AnsiColors.RED_BRIGHT + "💥 Coup critique de l'ennemi !" + AnsiColors.RESET);
+                            enemyDamage = enemyAttack + 3;
+                        }
+
+                        // Application de la défense
+                        int finalDamage = Math.max(0, enemyDamage - playerDefense);
+                        playerHealth = playerHealth - finalDamage;
+                        
+                        System.out.println("⚔️ " + AnsiColors.RED_BRIGHT  + enemy.getName() + AnsiColors.RESET + " tape et inflige " + AnsiColors.YELLOW_BRIGHT + finalDamage + " DMG" + AnsiColors.RESET);
+                        if (playerDefense > 0 && enemyDamage > 0) {
+                            System.out.println(AnsiColors.CYAN_BRIGHT + "🛡️ Votre défense a absorbé " + (enemyDamage - finalDamage) + " dégâts" + AnsiColors.RESET);
+                        }
 
                         if (playerHealth <= 0) {
                             player.setHealth(0);
-                            System.out.println("\uD83D\uDC80 VOUS ETES MORT");
+                            System.out.println("\uD83D\uDC80 " + AnsiColors.RED_BRIGHT + "VOUS ETES MORT" + AnsiColors.RESET);
                             player.setDead(true);
                         }
                         else  {
                             player.setHealth(playerHealth);
+                            System.out.println(AnsiColors.GREEN_BRIGHT + "❤️ Il vous reste " + playerHealth + " HP" + AnsiColors.RESET);
                         }
                     }
                     break;
                 case 2:
                     player.setFleeing(true);
-                    System.out.println("Vous fuyez le combat !");
+                    System.out.println(AnsiColors.YELLOW_BRIGHT + "🏃 Vous fuyez le combat !" + AnsiColors.RESET);
                     break;
                 default:
                     System.out.println("Entrez un chiffre entre 1 et 2");

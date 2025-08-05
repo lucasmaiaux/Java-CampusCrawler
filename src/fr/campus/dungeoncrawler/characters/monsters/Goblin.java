@@ -7,9 +7,9 @@ public class Goblin extends Monster {
      */
     public Goblin(String name) {
         super(name);
-        this.health = 10;
-        this.maxHealth = 10;
-        this.attack = 5;
+        this.health = 12;  // Augmenté de 10 à 12
+        this.maxHealth = 12;
+        this.attack = 7;    // Augmenté de 5 à 7
     }
 
     public Goblin(int id, String name, int health, int maxHealth, int attack) {

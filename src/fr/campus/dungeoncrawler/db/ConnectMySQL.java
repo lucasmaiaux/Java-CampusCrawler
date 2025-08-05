@@ -1,6 +1,5 @@
 package fr.campus.dungeoncrawler.db;
 import java.sql.*;
-import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,24 +7,23 @@ import com.google.gson.GsonBuilder;
 import fr.campus.dungeoncrawler.board.Board;
 import fr.campus.dungeoncrawler.board.cells.Cell;
 import fr.campus.dungeoncrawler.board.cells.defensive.potion.CellPotion;
-import fr.campus.dungeoncrawler.board.cells.defensive.shield.CellShield;
+import fr.campus.dungeoncrawler.board.cells.defensive.shield.CellDefensiveEquipment;
 import fr.campus.dungeoncrawler.board.cells.empty.CellEmpty;
 import fr.campus.dungeoncrawler.board.cells.enemies.CellEnemy;
 import fr.campus.dungeoncrawler.board.cells.offensive.CellSpell;
 import fr.campus.dungeoncrawler.board.cells.offensive.CellWeapon;
-import fr.campus.dungeoncrawler.characters.monsters.Dragon;
-import fr.campus.dungeoncrawler.characters.monsters.Goblin;
-import fr.campus.dungeoncrawler.characters.monsters.Monster;
-import fr.campus.dungeoncrawler.characters.monsters.Witch;
+import fr.campus.dungeoncrawler.characters.monsters.*;
 import fr.campus.dungeoncrawler.characters.players.Player;
 import fr.campus.dungeoncrawler.characters.players.Warrior;
 import fr.campus.dungeoncrawler.characters.players.Wizard;
 import fr.campus.dungeoncrawler.equipments.defensive.DefensiveEquipment;
-import fr.campus.dungeoncrawler.equipments.defensive.Potion;
+import fr.campus.dungeoncrawler.equipments.Potion;
 import fr.campus.dungeoncrawler.equipments.defensive.Shield;
 import fr.campus.dungeoncrawler.equipments.offensive.OffensiveEquipment;
 import fr.campus.dungeoncrawler.equipments.offensive.Spell;
 import fr.campus.dungeoncrawler.equipments.offensive.Weapon;
+import fr.campus.dungeoncrawler.equipments.defensive.Armor;
+import fr.campus.dungeoncrawler.equipments.defensive.Helmet;
 
 public class ConnectMySQL {
     public static void main(String args[])
@@ -44,7 +42,9 @@ public class ConnectMySQL {
         RuntimeTypeAdapterFactory<DefensiveEquipment> defensiveFactory =
                 RuntimeTypeAdapterFactory.of(DefensiveEquipment.class, "type")
                         .registerSubtype(Shield.class, "Shield")
-                        .registerSubtype(Potion.class, "Potion");
+                        .registerSubtype(Potion.class, "Potion")
+                        .registerSubtype(Armor.class, "Armor")
+                        .registerSubtype(Helmet.class, "Helmet");
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapterFactory(offensiveFactory)
@@ -59,7 +59,7 @@ public class ConnectMySQL {
         RuntimeTypeAdapterFactory<Cell> boardFactory =
                 RuntimeTypeAdapterFactory.of(Cell.class, "type")
                         .registerSubtype(CellPotion.class, "CellPotion")
-                        .registerSubtype(CellShield.class, "CellShield")
+                        .registerSubtype(CellDefensiveEquipment.class, "CellShield")
                         .registerSubtype(CellEmpty.class, "CellEmpty")
                         .registerSubtype(CellEnemy.class, "CellEnemy")
                         .registerSubtype(CellSpell.class, "CellSpell")
@@ -69,7 +69,8 @@ public class ConnectMySQL {
                 RuntimeTypeAdapterFactory.of(Monster.class, "type")
                         .registerSubtype(Dragon.class, "Dragon")
                         .registerSubtype(Goblin.class, "Goblin")
-                        .registerSubtype(Witch.class, "Witch");
+                        .registerSubtype(Witch.class, "Witch")
+                        .registerSubtype(Orc.class, "Orc");
 
         RuntimeTypeAdapterFactory<OffensiveEquipment> offensiveFactory =
                 RuntimeTypeAdapterFactory.of(OffensiveEquipment.class, "type")
@@ -79,7 +80,9 @@ public class ConnectMySQL {
         RuntimeTypeAdapterFactory<DefensiveEquipment> defensiveFactory =
                 RuntimeTypeAdapterFactory.of(DefensiveEquipment.class, "type")
                         .registerSubtype(Shield.class, "Shield")
-                        .registerSubtype(Potion.class, "Potion");
+                        .registerSubtype(Potion.class, "Potion")
+                        .registerSubtype(Armor.class, "Armor")
+                        .registerSubtype(Helmet.class, "Helmet");
 
 
 

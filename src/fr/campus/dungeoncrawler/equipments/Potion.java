@@ -1,6 +1,8 @@
-package fr.campus.dungeoncrawler.equipments.defensive;
+package fr.campus.dungeoncrawler.equipments;
 
-public class Potion extends DefensiveEquipment{
+import fr.campus.dungeoncrawler.equipments.defensive.DefensiveEquipment;
+
+public class Potion extends DefensiveEquipment {
 
     public Potion(String name, int defense) {
         super(name, defense);

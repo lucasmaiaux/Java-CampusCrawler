@@ -25,7 +25,29 @@ public class Game {
         this.player = player;
         this.playerPosition = position;
         this.board = new Board();
-        board.initBoardRandom(64);
+        //board.initBoardRandom(64);
+
+        board.initBoardRandom(
+                64,
+                2,
+                4,
+                6,
+                4,
+                6,
+                6,
+                4,
+                2,
+                6,
+                4,
+                2,
+                3,
+                2,
+                3,
+                2,
+                2,
+                2,
+                2);
+
         this.board = createBoard(board);
     }
 
@@ -72,11 +94,18 @@ public class Game {
     public void playTurn() {
         System.out.println("------------");
         System.out.println(AnsiColors.WHITE_BRIGHT + "Nouveau tour");
+        
+        // Affichage des stats du joueur
+        System.out.println(AnsiColors.CYAN_BRIGHT + "📊 " + player.getName() + " - Niveau " + player.getLevel() + 
+                         " | ❤️ " + player.getHealth() + "/" + player.getMaxHealth() + 
+                         " | ⚔️ ATK: " + (player.getAttack() + player.getOffensiveEquipment().getAttack()) +
+                         " | 🛡️ DEF: " + (player.getDefensiveEquipment() != null ? player.getDefensiveEquipment().getDefense() : 0) +
+                         " | 📈 Exp: " + player.getExperience() + "/" + player.getExperienceToNextLevel() + AnsiColors.RESET);
 
         //int diceRoll = dice.newRoll(6);
         int diceRoll = dice6.rollDice();
         //int diceRoll = dice.newFakeRoll();
-        System.out.println("Lancer dé : " + diceRoll);
+        System.out.println("🎲 Lancer dé : " + diceRoll);
 
         try
         {
@@ -87,22 +116,22 @@ public class Game {
             else {
                 // Affichage Case x -> x+y
                 int playerNextPosition = playerPosition + diceRoll;
-                System.out.print("Case " + playerPosition + " -> " + playerNextPosition);
+                System.out.print("📍 Case " + playerPosition + " -> " + playerNextPosition);
 
                 System.out.println(" " + board.cells.get(playerNextPosition).toString() + AnsiColors.RESET );
                 board.cells.get(playerNextPosition).interact(player);
 
                 if (player.isFleeing()) {
-                    playerPosition = playerPosition - dice.newRoll(6);
+                    playerPosition = Math.max(0,playerPosition - dice.newRoll(6));
                     player.setFleeing(false);
-                    System.out.println("Retour à la case " + playerPosition);
+                    System.out.println("🏃 Retour à la case " + playerPosition);
                 }
                 else {
                     playerPosition = playerNextPosition;
                 }
             }
         } catch (OutOfBoardException e) {
-            System.out.println("Ligne d'arrivée dépassée, on relance");
+            System.out.println("🎯 Ligne d'arrivée dépassée, on relance");
         }
 
         try{

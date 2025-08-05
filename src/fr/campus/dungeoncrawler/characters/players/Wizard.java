@@ -1,8 +1,7 @@
 package fr.campus.dungeoncrawler.characters.players;
 
-import fr.campus.dungeoncrawler.characters.Character;
 import fr.campus.dungeoncrawler.equipments.defensive.DefensiveEquipment;
-import fr.campus.dungeoncrawler.equipments.defensive.Potion;
+import fr.campus.dungeoncrawler.equipments.Potion;
 import fr.campus.dungeoncrawler.equipments.offensive.OffensiveEquipment;
 import fr.campus.dungeoncrawler.equipments.offensive.Spell;
 
@@ -11,9 +10,9 @@ public class Wizard extends Player {
 
     public Wizard(String name) {
         super(name);
-        this.health = 6;
-        this.maxHealth = 6;
-        this.attack = 15;
+        this.health = 8;  // Augmenté de 6 à 8
+        this.maxHealth = 8;
+        this.attack = 12;  // Légèrement réduit de 15 à 12 pour équilibrer
         this.offensiveEquipment = new Spell("Spell", "Fireball", 1);
         this.defensiveEquipment = new Potion("Potion", "Health Potion", 2);
     }
