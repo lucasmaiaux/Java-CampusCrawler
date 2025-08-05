@@ -1,8 +1,10 @@
 package fr.campus.dungeoncrawler;
 
+import fr.campus.dungeoncrawler.AnsiColors;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println(
+        System.out.println(AnsiColors.RED_BOLD_BRIGHT +
                 " ██████╗ █████╗ ███╗   ███╗██████╗ ██╗   ██╗███████╗     ██████╗██████╗  █████╗ ██╗    ██╗██╗     ███████╗██████╗ \n" +
                 "██╔════╝██╔══██╗████╗ ████║██╔══██╗██║   ██║██╔════╝    ██╔════╝██╔══██╗██╔══██╗██║    ██║██║     ██╔════╝██╔══██╗\n" +
                 "██║     ███████║██╔████╔██║██████╔╝██║   ██║███████╗    ██║     ██████╔╝███████║██║ █╗ ██║██║     █████╗  ██████╔╝\n" +
@@ -11,7 +13,7 @@ public class Main {
                 " ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝      ╚═════╝ ╚══════╝     ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚══╝╚══╝ ╚══════╝╚══════╝╚═╝  ╚═╝\n" +
                 "                                                                                                                  \n" +
                 "                                        Le donjon est ouvert                                                      \n" +
-                "                                    ~ Entrez si vous l'osez... ~                                                   ");
+                "                                    ~ Entrez si vous l'osez...   ~                                                   " + AnsiColors.RESET);
 
         Menu.startGame();
         System.out.println("Merci d'avoir joué !");

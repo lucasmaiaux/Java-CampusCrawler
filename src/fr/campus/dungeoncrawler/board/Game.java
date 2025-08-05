@@ -1,29 +1,47 @@
 package fr.campus.dungeoncrawler.board;
 //import java.util.concurrent.TimeUnit;
 
-import fr.campus.dungeoncrawler.board.cells.*;
-import fr.campus.dungeoncrawler.characters.Character;
+import fr.campus.dungeoncrawler.AnsiColors;
+import fr.campus.dungeoncrawler.board.dice.Dice;
+import fr.campus.dungeoncrawler.board.dice.Dice20;
+import fr.campus.dungeoncrawler.board.dice.Dice6;
+import fr.campus.dungeoncrawler.characters.players.Player;
 import fr.campus.dungeoncrawler.exceptions.OutOfBoardException;
 
-import java.util.ArrayList;
-import java.util.List;
+import static fr.campus.dungeoncrawler.db.ConnectMySQL.createBoard;
+import static fr.campus.dungeoncrawler.db.ConnectMySQL.editBoard;
 
 public class Game {
     private int nbPlayers = 1;
-    private int nbCells = 4;
-    private Character character;
+    private Player player;
     private int playerPosition;
     //private Cell[] board = new Cell[4];
-    private Board board = new Board();
+    private Board board;
     private Dice dice = new Dice();
+    private Dice6 dice6 = new Dice6();
 
-
-    public Game(int nb_players, Character character, int position) {
+    public Game(int nb_players, Player player, int position) {
         this.nbPlayers = nb_players;
-        this.character = character;
+        this.player = player;
         this.playerPosition = position;
-        //this.dice = new Dice();
-        //this.board = new ArrayList<Cell>();
+        this.board = new Board();
+        board.initBoardRandom(64);
+        this.board = createBoard(board);
+    }
+
+    public Game(int nb_players, Player player, int position, Board board) {
+        this.nbPlayers = nb_players;
+        this.player = player;
+        this.playerPosition = position;
+        this.board = board;
+    }
+
+    public int getPlayerPosition() {
+        return playerPosition;
+    }
+
+    public void setPlayerPosition(int playerPosition) {
+        this.playerPosition = playerPosition;
     }
 
     /**
@@ -40,10 +58,12 @@ public class Game {
 
     public void runGame() {
         System.out.println("Début de la partie");
-        board.initBoard();
+        System.out.println("Plateau n°" + board.getId());
+        //board.initBoardRandom(64);
+        //createBoard(board);
 
         // Boucle principale de jeu
-        while (playerPosition < nbCells && character.getHealth()>0) {
+        while (playerPosition < (board.cells.size() - 1) && !player.isDead()) {
             playTurn();
         }
         endGame();
@@ -51,37 +71,57 @@ public class Game {
 
     public void playTurn() {
         System.out.println("------------");
-        System.out.println("Nouveau tour");
+        System.out.println(AnsiColors.WHITE_BRIGHT + "Nouveau tour");
 
-        //int diceRoll = dice.newRoll();
-        int diceRoll = dice.newFakeRoll();
+        //int diceRoll = dice.newRoll(6);
+        int diceRoll = dice6.rollDice();
+        //int diceRoll = dice.newFakeRoll();
         System.out.println("Lancer dé : " + diceRoll);
 
         try
         {
-            //position = Math.min(position + diceRoll, 64);
-            if (playerPosition + diceRoll > nbCells)
+            if (playerPosition + diceRoll > (board.cells.size() - 1))
             {
                 throw new OutOfBoardException();
             }
             else {
                 // Affichage Case x -> x+y
                 int playerNextPosition = playerPosition + diceRoll;
-                System.out.print("Case " + (playerPosition) + " -> ");
-                System.out.print(playerNextPosition);
-                System.out.println(" " + board.cells.get(playerPosition).toString());
-                playerPosition = playerNextPosition;
+                System.out.print("Case " + playerPosition + " -> " + playerNextPosition);
 
+                System.out.println(" " + board.cells.get(playerNextPosition).toString() + AnsiColors.RESET );
+                board.cells.get(playerNextPosition).interact(player);
+
+                if (player.isFleeing()) {
+                    playerPosition = playerPosition - dice.newRoll(6);
+                    player.setFleeing(false);
+                    System.out.println("Retour à la case " + playerPosition);
+                }
+                else {
+                    playerPosition = playerNextPosition;
+                }
             }
         } catch (OutOfBoardException e) {
             System.out.println("Ligne d'arrivée dépassée, on relance");
         }
 
-        customDelay(800);
+        try{
+            System.in.read();
+        }
+        catch(Exception e){}
+
+        //customDelay(1000);
 
     }
 
     public void endGame() {
-        System.out.println("Partie terminée !");
+        if (player.isDead()) {
+            System.out.println("Vous êtes mort comme un gros nul");
+        }
+        else {
+            System.out.println("Partie terminée !");
+        }
+
+        editBoard(board);
     }
 }

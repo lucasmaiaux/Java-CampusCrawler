@@ -1,12 +1,13 @@
-package fr.campus.dungeoncrawler.characters;
+package fr.campus.dungeoncrawler.characters.players;
 
+import fr.campus.dungeoncrawler.characters.Character;
 import fr.campus.dungeoncrawler.equipments.defensive.DefensiveEquipment;
 import fr.campus.dungeoncrawler.equipments.defensive.Potion;
 import fr.campus.dungeoncrawler.equipments.offensive.OffensiveEquipment;
 import fr.campus.dungeoncrawler.equipments.offensive.Spell;
 
 
-public class Wizard extends Character {
+public class Wizard extends Player {
 
     public Wizard(String name) {
         super(name);

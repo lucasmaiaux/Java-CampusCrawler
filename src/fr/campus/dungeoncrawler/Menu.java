@@ -1,10 +1,13 @@
 package fr.campus.dungeoncrawler;
 
+import fr.campus.dungeoncrawler.board.Board;
 import fr.campus.dungeoncrawler.board.Game;
 import fr.campus.dungeoncrawler.characters.Character;
-import fr.campus.dungeoncrawler.characters.Warrior;
-import fr.campus.dungeoncrawler.characters.Wizard;
+import fr.campus.dungeoncrawler.characters.players.Player;
+import fr.campus.dungeoncrawler.characters.players.Warrior;
+import fr.campus.dungeoncrawler.characters.players.Wizard;
 import fr.campus.dungeoncrawler.db.ConnectMySQL;
+import fr.campus.dungeoncrawler.AnsiColors;
 
 import java.util.Scanner;
 
@@ -17,7 +20,6 @@ import static fr.campus.dungeoncrawler.db.ConnectMySQL.*;
  */
 public class Menu {
     static Scanner clavier = new Scanner(System.in);
-    //static private Character character = null;
 
     /**
      * Start Menu
@@ -26,60 +28,49 @@ public class Menu {
         int userChoice = 0;
 
         do {
-            System.out.println("""
-                    =========================================
-                    |           MENU PRINCIPAL              |
-                    =========================================
-                    | 1 - Créer un personnage               |
-                    | 2 - Modifier un personnage            |
-                    | 3 - Lancer une partie                 |
-                    | 4 - Quitter                           |
-                    =========================================""");
-            //System.out.println("| 1 - Créer un personnage               |");
-            //System.out.println("| 2 - Modifier un personnage            |");
-            //System.out.println("| 3 - Lancer une partie                 |");
-            //System.out.println("| 4 - Quitter                           |");
+            System.out.println(
+                    AnsiColors.WHITE_BRIGHT +
+                            "=========================================\n" +
+                            "|           " + AnsiColors.WHITE_BOLD_BRIGHT + "MENU PRINCIPAL" + AnsiColors.WHITE_BRIGHT + "              |\n" +
+                            "=========================================\n" +
+                            "| 1 - Créer un personnage               |\n" +
+                            "| 2 - Modifier un personnage            |\n" +
+                            "| 3 - Voir les plateaux                 |\n" +
+                            "| 4 - Lancer une partie                 |\n" +
+                            "| 5 - Quitter                           |\n" +
+                            "=========================================" +
+                            AnsiColors.RESET
+            );
 
             userChoice = clavier.nextInt();
             clavier.nextLine(); // Pour clear le cache du \n
-            System.out.println("----------------------------------------");
+            System.out.println(AnsiColors.WHITE_BRIGHT + "----------------------------------------------------");
 
             switch (userChoice) {
                 case 1:
-                    createCharacter();
+                    createPlayer();
                     break;
                 case 2:
-                    /*
-                    if (character == null) {
-                        System.out.println("Il faut d'abord créer un personnage !");
-                    }
-                    else {
-                    */
-                    editCharacters();
-
+                    editPlayers();
                     break;
                 case 3:
-                    /*
-                    if (character == null) {
-                        System.out.println("Il faut d'abord créer un personnage !");
-                    }
-                    else {
-                    */
-                    createGame();
-                    //}
+                    showBoards();
                     break;
                 case 4:
+                    createGame();
+                    break;
+                case 5:
                     // On quitte
                     break;
                 default:
-                    System.out.println("Entrez un chiffre entre 1 et 4");
+                    System.out.println("Entrez un chiffre entre 1 et 5");
             }
 
-        } while (userChoice != 4);
+        } while (userChoice != 5);
     }
 
-    public static void createCharacter() {
-        System.out.println("-------- Creation de personnage --------");
+    public static void createPlayer() {
+        System.out.println(AnsiColors.WHITE_BOLD_BRIGHT + "-------------- Creation de personnage --------------" + AnsiColors.RESET);
         String newClass;
         String newName;
 
@@ -106,22 +97,22 @@ public class Menu {
         System.out.println("Personnage créé !");
     }
 
-    public static void editCharacters() {
+    public static void editPlayers() {
         int userChoice = 0;
-        System.out.println("------ Modification de personnage ------");
-        System.out.println("Choisir un personnage depuis la liste : ");
-        ConnectMySQL.getHeroes();
+        System.out.println(AnsiColors.WHITE_BOLD_BRIGHT + "------------ Modification de personnage ------------" + AnsiColors.RESET);
+        getHeroes();
+        System.out.println(AnsiColors.CYAN_BRIGHT + "Choisir un personnage depuis la liste : " + AnsiColors.RESET);
 
         userChoice = clavier.nextInt();
         clavier.nextLine(); // Pour clear le cache du \n
 
-        editCharacter(getHero(userChoice));
+        editPlayer(getHero(userChoice));
     }
 
-    public static void editCharacter(Character character) {
+    public static void editPlayer(Player player) {
         int userChoice = 0;
         do {
-            System.out.println(character.toString());
+            System.out.println(player.toString());
             System.out.println("1 - Modifier le nom");
             System.out.println("2 - Modifier la classe");
             System.out.println("3 - Menu principal");
@@ -131,10 +122,10 @@ public class Menu {
 
             switch (userChoice) {
                 case 1:
-                    editCharacterName(character);
+                    editCharacterName(player);
                     break;
                 case 2:
-                    character = editCharacterType(character);
+                    player = editCharacterType(player);
                     break;
                 case 3:
                     // On quitte
@@ -145,18 +136,18 @@ public class Menu {
         } while (userChoice != 3);
     }
 
-    public static void editCharacterName(Character character) {
-        System.out.println("Nom actuel : " + character.getName());
+    public static void editCharacterName(Player player) {
+        System.out.println("Nom actuel : " + player.getName());
         System.out.print("Nouveau nom : ");
 
         String newName = clavier.nextLine();
-        character.setName(newName);
-        editHero(character);
+        player.setName(newName);
+        editHero(player);
         System.out.println("Le nom a été correctement modifié");
     }
 
-    public static Character editCharacterType(Character character) {
-        String actualClass = character.getPlayerClass();
+    public static Player editCharacterType(Player player) {
+        String actualClass = player.getPlayerClass();
         System.out.println("Classe actuelle : " + actualClass);
         System.out.print("Nouvelle classe : ");
 
@@ -166,36 +157,69 @@ public class Menu {
             System.out.println("La classe " + actualClass + " est déjà active!");
         }
         else {
-            Character newCharacter;
+            Player newPlayer;
             switch (newClass) {
                 case "Warrior":
-                    newCharacter = new Warrior(character.getId(), character.getName(), character.getHealth(), character.getMaxHealth(), character.getAttack());
-                    editHero(newCharacter);
-                    character = newCharacter;
+                    newPlayer = new Warrior(player.getId(), player.getName(), player.getHealth(), player.getMaxHealth(), player.getAttack());
+                    editHero(newPlayer);
+                    player = newPlayer;
                     break;
                 case "Wizard":
-                    newCharacter = new Wizard(character.getId(), character.getName(), character.getHealth(), character.getMaxHealth(), character.getAttack());
-                    editHero(newCharacter);
-                    character = newCharacter;
+                    newPlayer = new Wizard(player.getId(), player.getName(), player.getHealth(), player.getMaxHealth(), player.getAttack());
+                    editHero(newPlayer);
+                    player = newPlayer;
                     break;
             }
             System.out.println("La classe a été correctement modifiée");
         }
-        return character;
+        return player;
     }
 
     public static void createGame() {
         int userChoice = 0;
-        System.out.println("--------- Creation de la partie --------");
-        System.out.println("Choisir un personnage depuis la liste : ");
-        ConnectMySQL.getHeroes();
+        System.out.println(AnsiColors.WHITE_BOLD_BRIGHT + "--------------- Creation de la partie --------------" + AnsiColors.RESET);
+        getHeroes();
+        System.out.println(AnsiColors.CYAN_BRIGHT + "Choisir un personnage depuis la liste : " + AnsiColors.RESET);
 
         userChoice = clavier.nextInt();
         clavier.nextLine(); // Pour clear le cache du \n
 
-        Character character = getHero(userChoice);
+        Player player = getHero(userChoice);
 
-        Game game = new Game(1, character, 0 );
+        getBoards();
+        System.out.println(AnsiColors.CYAN_BRIGHT + "Choisir un ID de board (0 pour créer un nouveau) : " + AnsiColors.RESET);
+
+        userChoice = clavier.nextInt();
+        clavier.nextLine(); // Pour clear le cache du \n
+
+        if  (userChoice == 0) {
+            createNewGame(player);
+        }
+        else {
+            continueGame(player, userChoice);
+        }
+    }
+
+    public static void showBoards() {
+        int userChoice = 0;
+        System.out.println(AnsiColors.WHITE_BOLD_BRIGHT + "-------------- Visionneuse de plateau --------------" + AnsiColors.RESET);
+        getBoards();
+        System.out.println(AnsiColors.CYAN_BRIGHT + "Choisir un plateau depuis la liste : " + AnsiColors.RESET);
+
+        userChoice = clavier.nextInt();
+        clavier.nextLine(); // Pour clear le cache du \n
+
+        System.out.println(getBoard(userChoice).toString());
+    }
+
+    public static void createNewGame(Player player) {
+        Game game = new Game(1, player, 0 );
+        game.runGame();
+    }
+
+    public static void continueGame(Player player, int id) {
+        Board board = getBoard(id);
+        Game game = new Game(1, player, 0 , board);
         game.runGame();
     }
 }

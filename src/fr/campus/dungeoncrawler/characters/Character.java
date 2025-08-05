@@ -9,8 +9,6 @@ public abstract class Character {
     protected int health;
     protected int maxHealth;
     protected int attack;
-    protected OffensiveEquipment offensiveEquipment;
-    protected DefensiveEquipment defensiveEquipment;
 
     public Character(String name) {
         this.name = name;
@@ -22,16 +20,6 @@ public abstract class Character {
         this.health = health;
         this.maxHealth = maxHealth;
         this.attack = attack;
-    }
-
-    public Character(int id, String name, int health, int maxHealth, int attack, OffensiveEquipment offensiveEquipment, DefensiveEquipment defensiveEquipment) {
-        this.id = id;
-        this.name = name;
-        this.health = health;
-        this.maxHealth = maxHealth;
-        this.attack = attack;
-        this.offensiveEquipment = offensiveEquipment;
-        this.defensiveEquipment = defensiveEquipment;
     }
 
     public int getId() {
@@ -58,21 +46,12 @@ public abstract class Character {
         this.health = health;
     }
 
-
     public int getAttack() {
         return attack;
     }
 
     public void setAttack(int attack) {
         this.attack = attack;
-    }
-
-    public OffensiveEquipment getOffensiveEquipment() {
-        return offensiveEquipment;
-    }
-
-    public void setOffensiveEquipment(OffensiveEquipment offensiveEquipment) {
-        this.offensiveEquipment = offensiveEquipment;
     }
 
     public int getMaxHealth() {
@@ -83,16 +62,7 @@ public abstract class Character {
         this.maxHealth = maxHealth;
     }
 
-    public DefensiveEquipment getDefensiveEquipment() {
-        return defensiveEquipment;
-    }
-
-    public void setDefensiveEquipment(DefensiveEquipment defensiveEquipment) {
-        this.defensiveEquipment = defensiveEquipment;
-    }
-
     public abstract String getPlayerClass();
-
 
     @Override
     public String toString() {
@@ -100,9 +70,7 @@ public abstract class Character {
                 name + " (" +
                 this.getPlayerClass() + ")" +
                 ", HP : " + health + " / " + maxHealth +
-                ", Attack : " + attack +
-                ", Off. Equip : " + offensiveEquipment.toString() +
-                ", Def. Equip : " + defensiveEquipment.toString();
+                ", Attack : " + attack;
     }
 
 }

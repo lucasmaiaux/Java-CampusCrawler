@@ -1,4 +1,4 @@
-package fr.campus.dungeoncrawler.board;
+package fr.campus.dungeoncrawler.board.dice;
 
 public class Dice {
     private int value;
@@ -26,8 +26,8 @@ public class Dice {
      * Throw a dice and return its result
      * @return Dice value (between 1 and 6)
      */
-    public int newRoll() {
-        return (int)(Math.random() * 6) + 1;
+    public int newRoll(int faces) {
+        return (int)(Math.random() * faces) + 1;
     }
 
     public int newFakeRoll() {

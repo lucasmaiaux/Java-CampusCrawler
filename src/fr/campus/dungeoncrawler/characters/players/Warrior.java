@@ -1,12 +1,12 @@
-package fr.campus.dungeoncrawler.characters;
+package fr.campus.dungeoncrawler.characters.players;
 
+import fr.campus.dungeoncrawler.characters.Character;
 import fr.campus.dungeoncrawler.equipments.defensive.DefensiveEquipment;
-import fr.campus.dungeoncrawler.equipments.defensive.Potion;
 import fr.campus.dungeoncrawler.equipments.defensive.Shield;
 import fr.campus.dungeoncrawler.equipments.offensive.OffensiveEquipment;
 import fr.campus.dungeoncrawler.equipments.offensive.Weapon;
 
-public class Warrior extends Character {
+public class Warrior extends Player {
     /**
      * Crée un personnage de la classe Warrior
      * @param name Nom du personnage
