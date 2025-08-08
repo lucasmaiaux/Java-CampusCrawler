@@ -11,5 +11,4 @@ public class Weapon extends OffensiveEquipment {
         this.type = type;
     }
 
-
 }
