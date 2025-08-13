@@ -36,15 +36,10 @@ Connectez-vous à MySQL et créez la base de données :
 mysql -u root -p
 
 -- Créer la base de données
-CREATE DATABASE javaquest;
-
--- Créer un utilisateur dédié (optionnel mais recommandé)
-CREATE USER 'javaquest_user'@'localhost' IDENTIFIED BY 'votre_mot_de_passe';
-GRANT ALL PRIVILEGES ON javaquest.* TO 'javaquest_user'@'localhost';
-FLUSH PRIVILEGES;
+CREATE DATABASE campus_crawler2;
 
 -- Sélectionner la base de données
-USE javaquest;
+USE campus_crawler2;
 ```
 
 #### Étape 2.2 : Créer les tables
@@ -52,63 +47,23 @@ USE javaquest;
 Exécutez le script SQL suivant pour créer les tables nécessaires :
 
 ```sql
--- Table structure for table `boards`
---
+-- Table des personnages
+CREATE TABLE IF NOT EXISTS character_list(
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL,
+    Type VARCHAR(255) NOT NULL,
+    Health INT NOT NULL,
+    MaxHealth INT NOT NULL,
+    Attack INT NOT NULL,
+    OffensiveEquipment VARCHAR(255),
+    DefensiveEquipment VARCHAR(255),
+);
 
-CREATE TABLE `boards` (
-  `id` int(11) NOT NULL,
-  `board` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`board`))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `character_list`
---
-
-CREATE TABLE `character_list` (
-  `Id` int(11) NOT NULL,
-  `Name` varchar(255) NOT NULL,
-  `Type` varchar(255) NOT NULL,
-  `Health` int(11) NOT NULL,
-  `MaxHealth` int(11) NOT NULL,
-  `Attack` int(11) NOT NULL,
-  `OffensiveEquipment` varchar(255) NOT NULL,
-  `DefensiveEquipment` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `boards`
---
-ALTER TABLE `boards`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `character_list`
---
-ALTER TABLE `character_list`
-  ADD PRIMARY KEY (`Id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `boards`
---
-ALTER TABLE `boards`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `character_list`
---
-ALTER TABLE `character_list`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-COMMIT;
+-- Table du plateau de jeu
+CREATE TABLE IF NOT EXISTS boards(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    board JSON NOT NULL,
+);
 ```
 
 ## 📚 Dépendances
