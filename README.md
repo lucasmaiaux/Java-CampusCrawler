@@ -147,30 +147,6 @@ Le projet utilise les bibliothèques suivantes (incluses dans le dossier `lib/`)
 #### 5. JavaFX non trouvé sur Java 11+
 **Solution :** JavaFX n'est plus inclus dans le JDK depuis Java 11. Téléchargez-le séparément depuis [openjfx.io](https://openjfx.io/)
 
-### Logs et débogage
-
-Pour activer les logs détaillés, ajoutez ces paramètres JVM :
-```bash
--Djava.util.logging.config.file=logging.properties
--Dcom.sun.javafx.isEmbedded=true
--Dprism.verbose=true
-```
-
-## 📧 Support
-
-Si vous rencontrez des problèmes :
-1. Vérifiez d'abord la section [Dépannage](#-dépannage)
-2. Consultez les [Issues](https://github.com/Pierrick74/JAVAQUEST/issues) existantes
-3. Créez une nouvelle issue avec :
-   - Description du problème
-   - Messages d'erreur complets
-   - Version de Java et JavaFX utilisées
-   - Système d'exploitation
-
-## 📝 License
-
-[À définir]
-
 ---
 
 **Bon jeu !** 🎮
