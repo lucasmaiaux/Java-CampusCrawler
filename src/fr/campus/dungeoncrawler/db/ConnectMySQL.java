@@ -102,7 +102,7 @@ public class ConnectMySQL {
         {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/campus_crawler", "root", "MonPass123!");
+                    "jdbc:mysql://localhost:3306/campus_crawler", "root", "");
             Statement stmt = conn.createStatement();
             ResultSet res = stmt.executeQuery("SELECT * FROM Character_list");
 
@@ -148,7 +148,7 @@ public class ConnectMySQL {
         {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/campus_crawler", "root", "MonPass123!");
+                    "jdbc:mysql://localhost:3306/campus_crawler", "root", "");
             Statement stmt = conn.createStatement();
             ResultSet res = stmt.executeQuery("SELECT * FROM Character_list WHERE Id = " + id);
 
@@ -187,7 +187,7 @@ public class ConnectMySQL {
         {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/campus_crawler", "root", "MonPass123!");
+                    "jdbc:mysql://localhost:3306/campus_crawler", "root", "");
 
             String sql = "INSERT INTO Character_list (Type, Name, Health, MaxHealth, Attack, OffensiveEquipment, DefensiveEquipment) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -225,7 +225,7 @@ public class ConnectMySQL {
         {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/campus_crawler", "root", "MonPass123!");
+                    "jdbc:mysql://localhost:3306/campus_crawler", "root", "");
 
             String sql = "UPDATE Character_list SET Type = ?, Name = ?, Health = ?, MaxHealth = ?, Attack = ?, OffensiveEquipment = ?, DefensiveEquipment = ? WHERE Id = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -253,7 +253,7 @@ public class ConnectMySQL {
         {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/campus_crawler", "root", "MonPass123!");
+                    "jdbc:mysql://localhost:3306/campus_crawler", "root", "");
 
             String sql = "INSERT INTO Boards (board) " +
                     "VALUES (?)";
@@ -294,7 +294,7 @@ public class ConnectMySQL {
         {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/campus_crawler", "root", "MonPass123!");
+                    "jdbc:mysql://localhost:3306/campus_crawler", "root", "");
 
             String sql = "UPDATE Boards SET board = ? WHERE Id = ?";
 
@@ -320,7 +320,7 @@ public class ConnectMySQL {
         {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/campus_crawler", "root", "MonPass123!");
+                    "jdbc:mysql://localhost:3306/campus_crawler", "root", "");
             Statement stmt = conn.createStatement();
             ResultSet res = stmt.executeQuery("SELECT * FROM Boards WHERE id = " + id);
 
@@ -347,7 +347,7 @@ public class ConnectMySQL {
         {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/campus_crawler", "root", "MonPass123!");
+                    "jdbc:mysql://localhost:3306/campus_crawler", "root", "");
             Statement stmt = conn.createStatement();
             ResultSet res = stmt.executeQuery("SELECT * FROM Boards");
 
@@ -378,7 +378,7 @@ public class ConnectMySQL {
         {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/campus_crawler", "root", "MonPass123!");
+                    "jdbc:mysql://localhost:3306/campus_crawler", "root", "");
 
             String sql = "UPDATE Character_list SET Health = ? WHERE Id = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
